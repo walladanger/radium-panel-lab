@@ -7,7 +7,7 @@ Everything a new session needs to keep building the editor without the chat it c
 | What | Where |
 | --- | --- |
 | This repository (the editor as one file) | `C:\Users\Warwick\source\repos\radium-panel-lab` on Warwick's PC, branch `main` |
-| GitHub | `origin` is set to `https://github.com/walladanger/radium-panel-lab.git`, but **the GitHub repo has not been created yet and nothing is pushed**. Create it empty (no README), then push `main`. From a cloud session the push goes through the linked computer (GitKraken `git_push`), because cloud sessions have no GitHub credentials for this account. |
+| GitHub | https://github.com/walladanger/radium-panel-lab (`main` pushed). From a cloud session, push through the linked computer (GitKraken `git_push`), because cloud sessions have no GitHub credentials for this account. |
 | Published artifact (same page, with a shared store) | https://claude.ai/artifact/5rUaAv58eTNLpkK8T5YvKy. It is titled "Radium Panel Lab" and declares the `db` capability. To update it from a new session, pass this URL as `url` to the Artifact tool after reading it. |
 | Radium itself | `C:\Users\Warwick\source\repos\Radium` (walladanger/Radium, fork of Atomic-Chat/Jan; Tauri 2 + Rust + React/Vite). The real Ollama panel is `web-app/src/containers/runtimes/OllamaPanel.tsx` on branch `feat/runtime-adapter-layer`. |
 
@@ -106,9 +106,8 @@ Preferences: terse and direct; show working outputs rather than descriptions; si
 
 ## Open work
 
-1. **Create the GitHub repo and push `main`.**
-2. **Run the editor on every Radium screen.** Extract the editor, motion and style-lab code into `panel-lab-overlay.js` (no dependence on the mock's `S`, `render` or `LAYOUTS`). Load it in Radium's web-app in dev builds behind a shortcut (for example Ctrl+Shift+E) or a Settings > Developer toggle. Save edits, comments and looks to a JSON file in the Radium repo through a small Tauri command (for example `docs/ui-notes/*.json`), so Claude or Codex can read them and turn them into real code. `pathOf` should prefer `data-testid`/`data-k`/`id`, because Radium's React DOM is deep.
-3. **Relationship to `walladanger/ui-lab`.** That is Warwick's own, more advanced visual editor concept (an in-situ overlay with element inspectors). Ask him before merging or duplicating ideas.
+1. **Run the editor on every Radium screen.** Extract the editor, motion and style-lab code into `panel-lab-overlay.js` (no dependence on the mock's `S`, `render` or `LAYOUTS`). Load it in Radium's web-app in dev builds behind a shortcut (for example Ctrl+Shift+E) or a Settings > Developer toggle. Save edits, comments and looks to a JSON file in the Radium repo through a small Tauri command (for example `docs/ui-notes/*.json`), so Claude or Codex can read them and turn them into real code. `pathOf` should prefer `data-testid`/`data-k`/`id`, because Radium's React DOM is deep.
+2. **Relationship to `walladanger/ui-lab`.** That is Warwick's own, more advanced visual editor concept (an in-situ overlay with element inspectors). Ask him before merging or duplicating ideas.
 
 ## Known limits
 
@@ -119,4 +118,4 @@ Preferences: terse and direct; show working outputs rather than descriptions; si
 
 ## Starter prompt for a new session
 
-> Continue the Radium Panel Lab graphical editor. Read `HANDOFF.md` and `README.md` in `C:\Users\Warwick\source\repos\radium-panel-lab` (link my computer), and read the artifact https://claude.ai/artifact/5rUaAv58eTNLpkK8T5YvKy and its store (collections `notes`, `edits`, `looks`, `lab`). Then: 1) create the GitHub repo walladanger/radium-panel-lab and push `main`; 2) start the overlay so the editor runs on every Radium screen.
+> Continue the Radium Panel Lab graphical editor. Read `HANDOFF.md` and `README.md` in `C:\Users\Warwick\source\repos\radium-panel-lab` (link my computer), and read the artifact https://claude.ai/artifact/5rUaAv58eTNLpkK8T5YvKy and its store (collections `notes`, `edits`, `looks`, `lab`). Then start the overlay so the editor runs on every Radium screen.
