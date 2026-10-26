@@ -1,87 +1,89 @@
-# Ember Studio Foundation
+# Radium Panel Lab
 
-Reusable Windows desktop application foundation built with React, TypeScript, Vite, and Tauri. Ember Studio is intentionally business-domain neutral so it can become the starting point for data, media, AI, monitoring, file-viewing, vehicle-data, or other specialized desktop applications.
+Reusable React, TypeScript, and Tauri foundation for premium Windows desktop applications.
 
-The project provides a smoky-black, blue-accented desktop shell for future applications, including:
+![CI](https://img.shields.io/github/actions/workflow/status/walladanger/radium-panel-lab/ci.yml?branch=main&label=CI) ![CodeQL](https://img.shields.io/github/actions/workflow/status/walladanger/radium-panel-lab/codeql.yml?branch=main&label=CodeQL) ![License](https://img.shields.io/github/license/walladanger/radium-panel-lab)
 
-- Borderless custom title bar with native window controls
-- Collapsible navigation and project-owned design tokens
-- Internal window manager with move, resize, minimize, maximize, and z-order behavior
-- Optional external Tauri feature windows
-- Generic file, settings, notification, dialog, tooltip, and feedback service boundaries
-- Placeholder Data Explorer and foundation welcome experience
-- Typed service contracts for future Java, Python, Rust, C#, or local HTTP/WebSocket services
+![Ember Studio shell with Data Explorer and color profiles](docs/screenshots/ember-studio-color-profiles.jpg)
 
-The application uses an opaque smoky-black main surface with restrained blue accents. Secondary menus, popovers, and information panels may use smoky glass treatment without making the primary workspace transparent.
+## Features
 
-## Development
-
-Requires Node.js 20.19 or newer and npm.
-
-Install dependencies and start the frontend preview:
-
-```bash
-npm install
-npm run dev
-```
-
-Run the frontend checks:
-
-```bash
-npm test
-npm run build
-```
-
-For native Windows development, install the Tauri v2 prerequisites and run the project with the Tauri CLI from a Windows machine. Native compilation and Windows runtime validation are intentionally kept separate from the browser-compatible frontend tests.
-
-## Foundation conventions
-
-- Keep reusable infrastructure in the shared folders listed below.
-- Put application-specific behavior under `src/features/<feature-name>`.
-- Keep file processing, persistence, and long-running work behind typed services instead of React components.
-- Use the project-owned design tokens and shared feedback components when adding UI.
-- Treat Tauri commands as a native boundary with JSON-compatible contracts.
-
-## Windows acceptance
-
-The frontend test suite, TypeScript project check, and Vite production build run in this repository. Before shipping a Windows application based on this template, also validate the native Tauri build and runtime behavior on Windows, including borderless dragging, resize edges and corners, minimize/maximize/restore, multi-monitor placement, per-monitor DPI, external feature windows, and saved window state.
+- Borderless custom title bar with native window controls.
+- Collapsible navigation and project-owned design tokens.
+- Internal window manager with move, resize, minimize, maximize, and z-order behavior.
+- Optional external Tauri feature windows.
+- Generic file, settings, notification, dialog, tooltip, and feedback service boundaries.
+- Typed service contracts for future Java, Python, Rust, C#, or local HTTP/WebSocket services.
 
 ## Architecture
 
-- `src/app` — application composition
-- `src/shell` — title bar, navigation, status bar, and branding
-- `src/design-system` — editable tokens, color profiles, and theme state
-- `src/windows` — reusable internal and native window infrastructure
-- `src/external-windows` — feature window lifecycle and routing
-- `src/file-system`, `src/settings`, `src/notifications`, `src/dialogs`, `src/tooltips`, `src/feedback` — shared service boundaries
-- `src/features` — future application-specific features
-- `src-tauri` — native Windows/Tauri commands and persistence boundary
-- `docs/architecture/backend-boundary.md` — backend integration guidance
+```mermaid
+flowchart TD
+    App[src/app] --> Shell[src/shell]
+    App --> Features[src/features]
+    App --> Windows[src/windows]
+    App --> Services[src/settings, src/file-system...]
+    Features --> Services
+    Services -.-> Tauri[src-tauri]
+```
 
-## Backend integration
+The application is built on React, TypeScript, Vite, and Tauri. Components use typed service interfaces only, isolating them from Tauri commands. Backend adapters implement these interfaces, enabling easy replacement with other languages or transports. See the [Foundation Guide](docs/foundation-guide.md) and [Backend Boundary](docs/architecture/backend-boundary.md) for more details.
 
-Future local services can replace adapters without changing feature components. A Java, Python, Rust, or C# worker can communicate through a Tauri command, local HTTP, WebSocket, JSON message channel, or another documented transport. Long-running work should report progress and cancellation asynchronously rather than blocking the React UI thread.
+## Quick start
 
-## GitHub automation
+Requires Node.js 20.19 or newer and npm.
 
-The repository includes three lightweight GitHub automations:
+Install dependencies:
 
-- **CI** runs the frontend tests, TypeScript check, Vite build, and a Windows native `cargo check`.
-- **CodeQL** scans the JavaScript/TypeScript source for security problems and coding errors.
-- **Dependabot** opens weekly dependency update pull requests for npm and Cargo packages.
+```bash
+npm install
+```
 
-These checks are designed to run before changes are merged into `main`.
+Start the frontend preview:
 
-The main application surface is opaque. Smoky glass treatment is reserved for secondary panels, popovers, and overlays.
+```bash
+npm run dev
+```
 
-## Visual previews
+Run the tests:
 
-Click either preview to open the full-size image on GitHub.
+```bash
+npm test
+```
 
-[![Ember Studio shell with Data Explorer and color profiles](docs/screenshots/ember-studio-color-profiles.jpg)](docs/screenshots/ember-studio-color-profiles.jpg)
+Build the frontend:
 
-[![Collapsed navigation with hover tooltip](docs/screenshots/ember-studio-collapsed-navigation.jpg)](docs/screenshots/ember-studio-collapsed-navigation.jpg)
+```bash
+npm run build
+```
 
-## License
+## Configuration
 
-Released under the MIT License. See [LICENSE](./LICENSE).
+Settings are stored and loaded by the `SettingsService` and available via `useSettings()`.
+
+| Key | Purpose | Default |
+| --- | --- | --- |
+| `version` | Settings version for migrations. | `1` |
+| `colorProfile` | Application accent color family and shade. | `{ family: 'sky', shade: 400 }` |
+| `navigationCollapsed` | State of the side navigation bar. | `false` |
+| `recentFiles` | List of recently opened file paths. | `[]` |
+| `windowBehavior.restoreOnLaunch` | Whether to restore windows when opening the app. | `true` |
+| `windowBehavior.rememberBounds` | Whether to remember the bounds of the app window. | `true` |
+| `extensionSettings` | Unstructured data for extensions. | `{}` |
+
+## Screenshots
+
+![Collapsed navigation with hover tooltip](docs/screenshots/ember-studio-collapsed-navigation.jpg)
+
+## Roadmap
+
+- Turn Radium Panel Lab into a full visual editor.
+- Show the real running app in iframes on a pan-and-zoom canvas.
+- Introduce a bridge script to report elements, source location, and styles, and apply preview-only changes.
+- Record structured change records (what, where in the source, before, after) instead of rewriting HTML into code.
+- Compile records into a production list in Markdown and JSON.
+- Implement an MCP server for agents to read the production list.
+
+## License & credits
+
+Released under the [MIT License](./LICENSE). Based on Ember Studio Foundation.
